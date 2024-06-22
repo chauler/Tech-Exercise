@@ -41,7 +41,7 @@ int main() {
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-    static const GLfloat g_vertex_buffer_data[] = {
+    GLfloat g_vertex_buffer_data[] = {
     -1.0f, -1.0f, 0.0f,
     1.0f, -1.0f, 0.0f,
     0.0f,  1.0f, 0.0f,
@@ -55,7 +55,6 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
     // Give our vertices to OpenGL.
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
     glVertexAttribPointer(
         0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
         3,                  // size
@@ -80,7 +79,19 @@ int main() {
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
-
+        if (glfwGetKey(window, GLFW_KEY_A) != GLFW_PRESS) {
+            g_vertex_buffer_data[0] += 0.01;
+            g_vertex_buffer_data[3] += 0.01;
+            g_vertex_buffer_data[6] += 0.01;
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) != GLFW_PRESS) {
+            g_vertex_buffer_data[0] -= 0.01;
+            g_vertex_buffer_data[3] -= 0.01;
+            g_vertex_buffer_data[6] -= 0.01;
+        }
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     } // Check if the ESC key was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
         glfwWindowShouldClose(window) == 0);
