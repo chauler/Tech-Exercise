@@ -66,6 +66,7 @@ int main() {
     glEnableVertexAttribArray(0);
     GLuint programID = LoadShaders("res/shader.vs", "res/shader.fs");
     glBindVertexArray(0);
+    float color[3] = {1.0, 1.0, 1.0};
     do {
         // Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,6 +75,13 @@ int main() {
         // Draw the triangle !
         glBindVertexArray(VertexArrayID);
         glUseProgram(programID);
+        glUniform3f(glGetUniformLocation(programID, "color"), color[0], color[1], color[2]);
+        for (int i = 0; i < 3; i++) {
+            if (color[i] > 1.0) {
+                color[i] = 0;
+            }
+            color[i] += 0.01 * i;
+        }
         glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
         // Swap buffers
