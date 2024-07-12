@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 #include "LoadShader.hpp"
+#include <cmath>
 using namespace glm;
 
 int main() {
@@ -77,10 +78,7 @@ int main() {
         glUseProgram(programID);
         glUniform3f(glGetUniformLocation(programID, "color"), color[0], color[1], color[2]);
         for (int i = 0; i < 3; i++) {
-            if (color[i] > 1.0) {
-                color[i] = 0;
-            }
-            color[i] += 0.01 * i;
+            color[i] = (sin(glfwGetTime())*0.5+0.5) * (i+1);
         }
         glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
